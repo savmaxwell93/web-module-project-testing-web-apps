@@ -35,6 +35,14 @@ test('renders THREE error messages if user enters no values into any fields.', a
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
     render(<ContactForm/>)
+    const firstNameField = screen.queryByLabelText(/first name*/i);
+    userEvent.type(firstNameField, "Savannah");
+    const lastNameField = screen.queryByLabelText(/last name*/i);
+    userEvent.type(lastNameField, "Maxwell");
+    const button = screen.queryByRole('button');
+    userEvent.click(button);
+    const errorMessage = await screen.findAllByTestId(/error/i);
+    expect(errorMessage).toHaveLength(1);
 });
 
 test('renders "email must be a valid email address" if an invalid email is entered', async () => {
